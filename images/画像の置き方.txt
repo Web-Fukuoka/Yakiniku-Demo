@@ -1,0 +1,49 @@
+炭火焼肉 くろべこ — 画像の置き方
+
+このフォルダ（images）に、下のファイル名で画像を保存してください。
+index.html を開き直すと、その場所に写真が表示されます。
+ファイルがない場所には、料理名の入った代わりの表示が出ます。
+
+・形式は .jpg（拡張子まで同じ名前にしてください）
+・横長の写真がおすすめです（メニュー写真は 4:3、トップは横長の大きいもの）
+
+■ トップ・おすすめ
+hero.jpg           炭火の上で焼けているカルビ（トップの背景・横長で大きめ）
+fair-gyutan.jpg    厚切り牛タン
+fair-lunch.jpg     焼肉定食
+fair-student.jpg   若いグループが焼肉を囲む様子
+fair-kids.jpg      家族で焼肉
+
+■ こだわり
+kd-wagyu.jpg       黒毛和牛の霜降り肉
+kd-cut.jpg         包丁で肉を切る手元
+kd-charcoal.jpg    炭火・七輪・網
+
+■ メニュー（お肉）
+kalbi.jpg          カルビ
+jo-kalbi.jpg       厚切り上カルビ
+harami.jpg         ハラミ
+tan.jpg            牛タン塩（薄切り）
+atsu-tan.jpg       厚切り牛タン
+wagyu-loin.jpg     黒毛和牛ロース
+misuji.jpg         ミスジ
+horumon.jpg        ホルモン盛り合わせ
+tontoro.jpg        豚トロ
+
+■ メニュー（ご飯・サイド・デザート）
+bibimbap.jpg       石焼ビビンバ
+reimen.jpg         冷麺
+namul.jpg          ナムル
+kimchi.jpg         キムチ
+salad.jpg          チョレギサラダ
+soup.jpg           わかめスープ
+soft.jpg           ソフトクリーム
+annin.jpg          杏仁豆腐
+
+■ ランチ・お持ち帰り
+lunch-kalbi.jpg    カルビ定食
+lunch-harami.jpg   ハラミ定食
+jyu.jpg            焼肉重
+
+探すときの検索語の例（Unsplash / Pexels / Pixabay など）
+  yakiniku, japanese bbq, wagyu, beef tongue, kalbi, bibimbap, naengmyeon, kimchi, charcoal grill

@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>炭火焼肉 くろべこ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="images/logo-128.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+1p:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: chain-grade clarity for a single shop. Action tiles first (予約・食べ放題・持ち帰り・お店),
+   then fairs, course comparison, a filterable photo menu, and a grill timer that guests use at the table.
+   Single deliberate look: charcoal black, ember red, bone white. */
+:root{
+  --coal:#121011; --coal-2:#1C1819; --coal-3:#272122; --bone:#F6EFE6; --ash:#B9AEA3; --line:#3A3132;
+  --ember:#E3341C; --ember-2:#FF6A2A; --gold:#F2B33D; --ok:#57C27A;
+  --f-head:"Dela Gothic One","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-body:"M PLUS 1p","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--coal);color:var(--bone);font-family:var(--f-body);font-size:16px;line-height:1.7}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:4px}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:72rem;margin:0 auto;padding-inline:16px}
+.num{font-variant-numeric:tabular-nums}
+.yen{font-family:var(--f-head);font-weight:400;letter-spacing:.01em}
+.yen small{font-family:var(--f-body);font-size:.6em;font-weight:700;margin-left:.15em;color:var(--ash)}
+
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(18,16,17,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:1rem;min-height:60px}
+.logo{display:flex;align-items:center;gap:.55rem;text-decoration:none}
+.logo .mark{width:46px;height:46px;border-radius:50%;display:block;flex:none}
+.logo .nm{font-family:var(--f-head);font-size:1.25rem;letter-spacing:.06em;line-height:1.1}
+.logo .nm small{display:block;font-family:var(--f-body);font-size:.62rem;letter-spacing:.2em;color:var(--ash);font-weight:500}
+.hdr nav{margin-left:auto;display:flex;gap:1.4rem;font-weight:700;font-size:.92rem}
+.hdr nav a{text-decoration:none;color:var(--ash)}
+.hdr nav a:hover{color:var(--bone)}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:48px;padding:.55rem 1.4rem;border-radius:999px;background:var(--ember);color:#fff;font-weight:800;text-decoration:none;border:0;font:inherit;font-weight:800;cursor:pointer;letter-spacing:.04em}
+.cta:hover{background:#F2431F}
+.cta.ghost{background:transparent;border:2px solid var(--bone);color:var(--bone)}
+.cta.gold{background:var(--gold);color:#1B1305}
+.hdr .cta{min-height:40px;padding:.3rem 1.1rem;font-size:.9rem}
+.lang{font-size:.78rem;border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem;text-decoration:none;color:var(--ash)}
+@media (max-width:900px){.hdr nav{display:none}.hdr .cta{margin-left:auto}}
+
+/* notice strip */
+.strip{background:var(--gold);color:#1B1305;font-weight:700;font-size:.88rem}
+.strip .wrap{padding-block:.45rem;display:flex;gap:.6rem;align-items:center}
+.strip b{background:#1B1305;color:var(--gold);padding:0 .45rem;border-radius:3px;font-size:.74rem}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--coal)}
+.hero .bg{position:absolute;inset:0}
+.hero .bg img{width:100%;height:100%;object-fit:cover;opacity:.55}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,16,17,.96) 0%,rgba(18,16,17,.7) 45%,rgba(18,16,17,.2) 100%),linear-gradient(0deg,var(--coal) 0%,transparent 35%)}
+.hero .wrap{position:relative;padding-block:clamp(3rem,9vw,6.5rem) clamp(2.5rem,6vw,4rem);display:flex;flex-direction:column;gap:1.2rem;max-width:72rem}
+.hero .kick{display:inline-flex;align-self:flex-start;gap:.5rem;align-items:center;background:var(--coal-3);border:1px solid var(--line);border-radius:999px;padding:.2rem .8rem;font-size:.82rem;font-weight:700;color:var(--gold)}
+.hero h1{font-family:var(--f-head);font-weight:400;font-size:clamp(2.3rem,7.4vw,5rem);line-height:1.12;letter-spacing:.01em;max-width:11em}
+.hero h1 em{font-style:normal;color:var(--ember-2)}
+.hero .lede{font-size:clamp(1rem,2.2vw,1.15rem);color:var(--ash);max-width:30em}
+.hero .price{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.hero .price .yen{font-size:clamp(2.2rem,6vw,3.4rem);color:var(--bone)}
+.hero .price span{font-size:.92rem;color:var(--ash)}
+.hero .row{display:flex;gap:.7rem;flex-wrap:wrap}
+.embers{position:absolute;inset:auto 0 0 0;height:60%;pointer-events:none;background:radial-gradient(40% 60% at 75% 100%,rgba(255,106,42,.35),transparent 70%)}
+
+/* action tiles */
+.acts{position:relative;z-index:2;margin-top:-1.5rem}
+.acts .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem}
+.act{display:flex;flex-direction:column;gap:.15rem;padding:1rem 1.1rem;background:var(--coal-2);border:1px solid var(--line);border-radius:14px;text-decoration:none;transition:transform .15s ease,border-color .15s ease;min-width:0}
+.act:hover{transform:translateY(-2px);border-color:var(--ember)}
+.act .ic{font-family:var(--f-head);font-size:1.5rem;color:var(--ember-2);line-height:1}
+.act b{font-size:1.02rem}
+.act span{font-size:.78rem;color:var(--ash)}
+@media (max-width:720px){.acts .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* section */
+.sec{padding-block:clamp(3rem,7vw,5rem) 0}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.sec-h h2{font-family:var(--f-head);font-weight:400;font-size:clamp(1.6rem,4.2vw,2.4rem);letter-spacing:.02em}
+.sec-h h2 small{display:block;font-family:var(--f-body);font-size:.42em;letter-spacing:.3em;color:var(--ember-2);font-weight:800;margin-bottom:.2rem}
+.sec-h p{color:var(--ash);font-size:.9rem;max-width:32em}
+
+/* fairs */
+.fairs{display:grid;grid-auto-flow:column;grid-auto-columns:min(82%,26rem);gap:.9rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.8rem;scrollbar-width:thin}
+.fair{scroll-snap-align:start;position:relative;border-radius:16px;overflow:hidden;min-height:15rem;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;text-decoration:none;background:var(--coal-3);border:1px solid var(--line)}
+.fair .img{position:absolute;inset:0}
+.fair .img img{width:100%;height:100%;object-fit:cover}
+.fair::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(12,10,10,.92) 10%,rgba(12,10,10,.1) 70%)}
+.fair>*:not(.img){position:relative;z-index:1}
+.fair .tag{align-self:flex-start;font-size:.72rem;font-weight:800;background:var(--ember);color:#fff;padding:.1rem .55rem;border-radius:4px;margin-bottom:.5rem}
+.fair .tag.g{background:var(--gold);color:#1B1305}
+.fair h3{font-family:var(--f-head);font-weight:400;font-size:1.45rem}
+.fair p{font-size:.86rem;color:var(--ash)}
+.fair .yen{font-size:1.6rem;margin-top:.2rem}
+
+/* courses */
+.common{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:1.2rem}
+.common div{background:var(--coal-2);padding:.8rem 1rem;display:flex;flex-direction:column;gap:.1rem;min-width:0}
+.common b{font-family:var(--f-head);font-weight:400;font-size:1.2rem;color:var(--bone);line-height:1.2}
+.common span{font-size:.78rem;color:var(--ash)}
+.courses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;align-items:stretch}
+.course{position:relative;background:var(--coal-2);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.course.pop{border:2px solid var(--ember);box-shadow:0 10px 30px rgba(227,52,28,.18)}
+.course .ph{position:relative;aspect-ratio:16/10;background:var(--coal-3)}
+.course .ph img{width:100%;height:100%;object-fit:cover}
+.course .rib{position:absolute;top:.7rem;left:.7rem;background:var(--ember);color:#fff;font-size:.74rem;font-weight:800;padding:.15rem .7rem;border-radius:999px}
+.course .bd{padding:1.1rem 1.2rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;flex:1}
+.course .top{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+.course h3{font-family:var(--f-head);font-weight:400;font-size:1.35rem}
+.course .cnt{font-size:.78rem;color:var(--ash);white-space:nowrap}
+.course .price{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.course .price .yen{font-size:2.3rem;line-height:1}
+.course .up{font-size:.74rem;font-weight:800;color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:0 .4rem}
+.course .kid{font-size:.8rem;color:var(--ash);margin-top:-.4rem}
+.course .what{border-top:1px dashed var(--line);padding-top:.75rem;display:flex;flex-direction:column;gap:.35rem;flex:1}
+.course .what .base{font-size:.8rem;color:var(--ash)}
+.course .what ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.3rem}
+.course .what li{font-weight:700;font-size:.95rem;display:flex;gap:.45rem;align-items:baseline}
+.course .what li::before{content:"＋";color:var(--ember-2);font-weight:800}
+.course .what li.plain::before{content:"・";color:var(--ash)}
+.course .cta{width:100%}
+@media (max-width:900px){.courses{grid-template-columns:1fr}.course .ph{aspect-ratio:21/9}}
+@media (max-width:560px){.common{grid-template-columns:1fr}}
+.notes{margin-top:.9rem;font-size:.82rem;color:var(--ash);display:flex;flex-direction:column;gap:.2rem}
+
+/* menu */
+.tabs{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.4rem;scrollbar-width:none}
+.tabs button,.chipf button{font:inherit;font-weight:700;font-size:.9rem;white-space:nowrap;background:var(--coal-2);border:1px solid var(--line);color:var(--ash);padding:.45rem 1rem;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--bone);color:var(--coal);border-color:var(--bone)}
+.filter{margin:.9rem 0 1.2rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.84rem;color:var(--ash)}
+.chipf{display:flex;flex-wrap:wrap;gap:.4rem}
+.chipf button{font-size:.8rem;padding:.25rem .75rem}
+.chipf button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.chipf button[aria-pressed="true"]::before{content:"✕ ";}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));gap:.9rem}
+.dish{background:var(--coal-2);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.dish .ph{position:relative;aspect-ratio:4/3;background:var(--coal-3)}
+.dish .ph img{width:100%;height:100%;object-fit:cover}
+.dish .badges{position:absolute;top:.5rem;left:.5rem;display:flex;gap:.3rem;flex-wrap:wrap}
+.dish .badges span{font-size:.68rem;font-weight:800;padding:.05rem .45rem;border-radius:4px;background:var(--ember);color:#fff}
+.dish .badges span.to{background:var(--bone);color:var(--coal)}
+.dish .bd{padding:.85rem 1rem 1rem;display:flex;flex-direction:column;gap:.35rem;flex:1}
+.dish h3{font-size:1.02rem;font-weight:800}
+.dish .meta{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem}
+.dish .meta .yen{font-size:1.35rem}
+.dish .kcal{font-size:.78rem;color:var(--ash)}
+.dish .alg{font-size:.72rem;color:var(--ash);border-top:1px dashed var(--line);padding-top:.45rem;margin-top:auto}
+.dish .alg b{color:var(--bone);font-weight:500}
+.empty{grid-column:1/-1;color:var(--ash);padding:2rem;text-align:center;border:1px dashed var(--line);border-radius:14px}
+
+/* image fade-in: only applied by script, so without JS images just show */
+img.fade{transition:opacity .35s ease-out}
+img.fade:not(.in){opacity:0!important}
+/* image fallback */
+.fb{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:1rem;background:radial-gradient(60% 70% at 50% 70%,rgba(227,52,28,.35),transparent 70%),repeating-linear-gradient(135deg,#221C1D 0 14px,#1E1819 14px 28px)}
+.fb b{font-family:var(--f-head);font-weight:400;font-size:1.3rem;color:var(--bone);opacity:.9}
+.fb small{display:block;font-size:.66rem;color:var(--ash);margin-top:.3rem}
+
+/* timer */
+.timer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:1.5rem;background:var(--coal-2);border:1px solid var(--line);border-radius:20px;padding:clamp(1.2rem,3vw,2rem)}
+.cuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;align-content:start}
+.cuts button{font:inherit;text-align:left;background:var(--coal-3);border:1px solid var(--line);color:var(--bone);border-radius:12px;padding:.7rem .9rem;cursor:pointer;display:flex;flex-direction:column}
+.cuts button b{font-size:.98rem}
+.cuts button span{font-size:.74rem;color:var(--ash)}
+.cuts button[aria-pressed="true"]{border-color:var(--ember-2);background:rgba(227,52,28,.14)}
+.dial{display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center}
+.ring{--p:0;width:min(15rem,70vw);aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--ember-2) calc(var(--p)*1turn),var(--coal-3) 0);display:grid;place-items:center;position:relative}
+.ring::before{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--coal-2)}
+.ring div{position:relative;display:flex;flex-direction:column;align-items:center}
+.ring .sec-n{font-family:var(--f-head);font-size:clamp(3rem,10vw,4.4rem);line-height:1}
+.ring .st{font-size:.86rem;color:var(--ash);font-weight:700}
+.dial .tip{font-size:.88rem;color:var(--ash);max-width:24em;min-height:3em}
+.dial .row{display:flex;gap:.6rem}
+.flip{animation:flip .6s ease 3}
+@keyframes flip{50%{transform:scale(1.05)}}
+@media (max-width:760px){.timer{grid-template-columns:1fr}}
+
+/* kodawari */
+.kd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem}
+.kd article{background:var(--coal-2);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.kd .ph{position:relative;aspect-ratio:16/10;background:var(--coal-3)}
+.kd .ph img{width:100%;height:100%;object-fit:cover}
+.kd .bd{padding:1rem 1.1rem 1.2rem;display:flex;flex-direction:column;gap:.4rem}
+.kd .no{font-family:var(--f-head);color:var(--ember-2);font-size:.95rem}
+.kd h3{font-size:1.1rem;font-weight:800}
+.kd p{font-size:.88rem;color:var(--ash)}
+@media (max-width:820px){.kd{grid-template-columns:1fr}}
+
+/* family + takeout */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+.panel{background:var(--coal-2);border:1px solid var(--line);border-radius:16px;padding:1.3rem;display:flex;flex-direction:column;gap:.7rem}
+.panel h3{font-family:var(--f-head);font-weight:400;font-size:1.35rem}
+.panel ul{margin:0;padding-left:1.1em;font-size:.9rem;color:var(--ash)}
+.bento{display:flex;flex-direction:column;gap:.5rem}
+.bento div{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dashed var(--line);padding-bottom:.45rem;font-size:.92rem}
+.bento .yen{font-size:1.1rem}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+
+/* shop */
+.shop{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:1.2rem}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem}
+.tbl th,.tbl td{padding:.75rem .4rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tbl th{width:6.5em;color:var(--ash);font-weight:500;white-space:nowrap}
+.busy{background:var(--coal-2);border:1px solid var(--line);border-radius:16px;padding:1.2rem;display:flex;flex-direction:column;gap:.8rem}
+.busy h3{font-size:1rem;font-weight:800}
+.bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;align-items:end;height:110px}
+.bars i{display:block;background:var(--coal-3);border-radius:3px 3px 0 0}
+.bars i.hi{background:var(--ember)}
+.bars i.md{background:#8A3A2A}
+.bars i.now{outline:2px solid var(--gold);outline-offset:1px}
+.axis{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;font-size:.66rem;color:var(--ash);text-align:center}
+.busy .now-t{font-size:.86rem;font-weight:700}
+.copy{font:inherit;font-size:.78rem;background:transparent;border:1px solid var(--line);color:var(--bone);border-radius:999px;padding:.05rem .65rem;cursor:pointer;margin-left:.4rem}
+@media (max-width:820px){.shop{grid-template-columns:1fr}}
+
+.shopimg{position:relative;aspect-ratio:21/8;border-radius:16px;overflow:hidden;margin-bottom:1.2rem;background:var(--coal-3)}
+.shopimg img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+@media (max-width:600px){.shopimg{aspect-ratio:16/10}}
+.famimg{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--coal-3)}
+.famimg img{width:100%;height:100%;object-fit:cover}
+/* news + footer */
+.news{list-style:none;margin:0;padding:0}
+.news li{display:grid;grid-template-columns:6.5em auto 1fr;gap:.8rem;padding:.75rem 0;border-bottom:1px solid var(--line);font-size:.92rem;align-items:baseline}
+.news time{color:var(--ash)}
+.news .k{font-size:.7rem;font-weight:800;border:1px solid var(--line);border-radius:4px;padding:0 .4rem;color:var(--gold)}
+@media (max-width:560px){.news li{grid-template-columns:auto 1fr}.news li span:last-child{grid-column:1/-1}}
+footer{margin-top:4rem;border-top:1px solid var(--line);background:#0C0A0B}
+footer .wrap{padding-block:2rem 7.5rem;display:flex;flex-wrap:wrap;gap:1rem 2.5rem;font-size:.84rem;color:var(--ash)}
+footer nav{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem}
+footer a{color:var(--bone)}
+
+/* bottom bar */
+.bbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:none;grid-template-columns:repeat(4,minmax(0,1fr));background:rgba(12,10,11,.97);border-top:1px solid var(--line);padding:.35rem 6px calc(.35rem + env(safe-area-inset-bottom,0px))}
+.bbar a{display:flex;flex-direction:column;align-items:center;gap:.05rem;text-decoration:none;font-size:.7rem;font-weight:700;color:var(--ash);padding:.25rem 0}
+.bbar a .ic{font-family:var(--f-head);font-size:1.1rem;color:var(--bone);line-height:1.2}
+.bbar a.main{color:var(--bone)}
+.bbar a.main .ic{background:var(--ember);width:2.9rem;height:2.9rem;border-radius:50%;display:grid;place-items:center;margin-top:-1.2rem;border:3px solid #0C0A0B;font-size:1rem}
+@media (max-width:900px){.bbar{display:grid}}
+
+/* reserve dialog */
+dialog{border:1px solid var(--line);border-radius:20px;background:var(--coal-2);color:var(--bone);padding:0;width:min(34rem,calc(100% - 24px));max-height:calc(100% - 24px)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+.dlg{padding:1.4rem;display:flex;flex-direction:column;gap:1rem}
+.dlg h2{font-family:var(--f-head);font-weight:400;font-size:1.5rem}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.field{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{font-size:.82rem;font-weight:700;color:var(--ash)}
+.field input,.field select,.field textarea{font:inherit;font-size:16px;padding:.6rem .7rem;border-radius:10px;border:1px solid var(--line);background:var(--coal-3);color:var(--bone);width:100%}
+.est{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:.8rem;gap:1rem;flex-wrap:wrap}
+.est .yen{font-size:1.6rem}
+.err{grid-column:1/-1;color:var(--gold);font-size:.86rem;font-weight:700}
+.hint{font-size:.76rem;color:var(--ash)}
+.x{position:absolute;top:.6rem;right:.6rem;background:transparent;border:0;color:var(--ash);font-size:1.4rem;cursor:pointer;width:44px;height:44px}
+@media (max-width:520px){.form{grid-template-columns:1fr}}
+</style>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","name":"炭火焼肉 くろべこ","servesCuisine":["Yakiniku","Japanese BBQ"],"priceRange":"¥3,000〜¥6,000","telephone":"+81-92-000-0029","address":{"@type":"PostalAddress","streetAddress":"天神2丁目0-0（架空）","addressLocality":"福岡市中央区","addressRegion":"福岡県","addressCountry":"JP"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"11:30","closes":"15:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"17:00","closes":"23:30"}],"acceptsReservations":"True"}
+</script>
+
+</head>
+<body>
+<header class="hdr">
+  <div class="wrap">
+    <a class="logo" href="#top"><img class="mark" src="images/logo-128.png" alt="炭火焼肉 くろべこ"><span class="nm">くろべこ<small>炭火焼肉・天神</small></span></a>
+    <nav aria-label="メイン">
+      <a href="#course">食べ放題</a><a href="#menu">メニュー</a><a href="#takeout">お持ち帰り</a><a href="#shop">お店の情報</a>
+    </nav>
+    <a class="lang" href="#en" lang="en" id="enBtn">EN</a>
+    <button class="cta" type="button" data-open-rsv>予約する</button>
+  </div>
+</header>
+
+<div class="strip"><div class="wrap"><b>お知らせ</b><span id="stripText">10月の牛タン祭り開催中。厚切り牛タンが食べ放題「上焼肉コース」に入りました。</span></div></div>
+
+<section class="hero" id="top">
+  <div class="bg"><img src="images/hero.jpg" alt="" data-fb="炭火で焼けるカルビ" fetchpriority="high"></div>
+  <div class="embers" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="kick">天神駅 徒歩4分・ランチもやってます</span>
+    <h1>炭火で、<em>厚切り</em>を、腹いっぱい。</h1>
+    <p class="lede">九州産の黒毛和牛と、一枚ずつ手で切る厚切りカルビ。食べ放題は90分、テーブルの炭火で焼きながら、好きなだけ。</p>
+    <p class="price"><span>食べ放題</span><span class="yen num">3,480<small>円〜（税込）</small></span><span>小学生半額・未就学児無料</span></p>
+    <div class="row">
+      <button class="cta" type="button" data-open-rsv>空席を確認して予約</button>
+      <a class="cta ghost" href="#course">コースを比べる</a>
+    </div>
+  </div>
+</section>
+
+<div class="acts wrap">
+  <div class="grid">
+    <button class="act" type="button" data-open-rsv style="font:inherit;color:inherit;text-align:left;cursor:pointer"><span class="ic">予</span><b>ネット予約</b><span>24時間・当日もOK</span></button>
+    <a class="act" href="#course"><span class="ic">放</span><b>食べ放題</b><span>3コース 3,480円〜</span></a>
+    <a class="act" href="#takeout"><span class="ic">持</span><b>お持ち帰り</b><span>焼肉弁当 1,080円〜</span></a>
+    <a class="act" href="#grill"><span class="ic">焼</span><b>焼き方タイマー</b><span>席で使えます</span></a>
+  </div>
+</div>
+
+<!-- フェア -->
+<section class="sec wrap" id="fair" aria-labelledby="fairH">
+  <div class="sec-h"><h2 id="fairH"><small>NOW</small>いまのおすすめ</h2><p>横にスクロールできます。</p></div>
+  <div class="fairs">
+    <a class="fair" href="#course"><span class="img"><img src="images/fair-gyutan.jpg" alt="" data-fb="厚切り牛タン"></span><span class="tag">10/1〜11/30</span><h3>牛タン祭り</h3><p>厚切り牛タンが「上焼肉コース」で食べ放題に。</p><span class="yen num">4,480<small>円</small></span></a>
+    <a class="fair" href="#menu" data-tab="lunch"><span class="img"><img src="images/fair-lunch.jpg" alt="" data-fb="焼肉定食"></span><span class="tag g">平日11:30〜15:00</span><h3>焼肉ランチ</h3><p>カルビ定食。ご飯・スープおかわり無料。</p><span class="yen num">990<small>円</small></span></a>
+    <a class="fair" href="#course"><span class="img"><img src="images/fair-student.jpg" alt="" data-fb="学生の食べ放題"></span><span class="tag">平日限定</span><h3>学生は500円引き</h3><p>学生証の提示で、食べ放題コースがすべて500円引き。</p></a>
+    <a class="fair" href="#family"><span class="img"><img src="images/fair-kids.jpg" alt="" data-fb="家族で焼肉"></span><span class="tag g">毎日</span><h3>ファミリー応援</h3><p>小学生は半額、未就学のお子さまは無料。キッズチェアあり。</p></a>
+  </div>
+</section>
+
+<!-- 食べ放題 -->
+<section class="sec wrap" id="course" aria-labelledby="courseH">
+  <div class="sec-h"><h2 id="courseH"><small>ALL YOU CAN EAT</small>食べ放題コース</h2><p>上のコースほど、お肉が増えます。迷ったら、まんなかの「上焼肉」がおすすめです。</p></div>
+  <div class="common" aria-label="全コース共通">
+    <div><b class="num">90分</b><span>ラストオーダーは70分</span></div>
+    <div><b>ご飯・麺・デザート</b><span>ビビンバ・冷麺・ソフトクリームも食べ放題</span></div>
+    <div><b>子どもにやさしい</b><span>小学生は半額、未就学児は無料</span></div>
+  </div>
+  <div class="courses">
+    <article class="course">
+      <div class="ph"><img src="images/kalbi.jpg" alt="カルビ" data-fb="カルビ"></div>
+      <div class="bd">
+        <div class="top"><h3>スタンダード</h3><span class="cnt num">全78品</span></div>
+        <p class="price"><span class="yen num">3,480<small>円</small></span></p>
+        <p class="kid num">小学生 1,740円・未就学児 無料</p>
+        <div class="what"><span class="base">定番のお肉がそろいます</span>
+          <ul><li class="plain">くろべこカルビ</li><li class="plain">ハラミ・牛タン塩</li><li class="plain">ホルモン・豚トロ ほか</li></ul></div>
+        <button class="cta ghost" type="button" data-open-rsv data-course="std">このコースで予約</button>
+      </div>
+    </article>
+    <article class="course pop">
+      <div class="ph"><img src="images/atsu-tan.jpg" alt="厚切り牛タン" data-fb="厚切り牛タン"><span class="rib">いちばん人気</span></div>
+      <div class="bd">
+        <div class="top"><h3>上焼肉</h3><span class="cnt num">全96品</span></div>
+        <p class="price"><span class="yen num">4,480<small>円</small></span><span class="up num">スタンダード＋1,000円</span></p>
+        <p class="kid num">小学生 2,240円・未就学児 無料</p>
+        <div class="what"><span class="base">スタンダードの全品に、</span>
+          <ul><li>厚切り上カルビ</li><li>厚切り牛タン（牛タン祭り）</li></ul></div>
+        <button class="cta" type="button" data-open-rsv data-course="jo">このコースで予約</button>
+      </div>
+    </article>
+    <article class="course">
+      <div class="ph"><img src="images/wagyu-loin.jpg" alt="黒毛和牛" data-fb="黒毛和牛"></div>
+      <div class="bd">
+        <div class="top"><h3>黒毛和牛</h3><span class="cnt num">全108品</span></div>
+        <p class="price"><span class="yen num">5,980<small>円</small></span><span class="up num">上焼肉＋1,500円</span></p>
+        <p class="kid num">小学生 2,990円・未就学児 無料</p>
+        <div class="what"><span class="base">上焼肉の全品に、</span>
+          <ul><li>黒毛和牛 特選ロース</li><li>黒毛和牛 ミスジ</li></ul></div>
+        <button class="cta ghost" type="button" data-open-rsv data-course="wagyu">このコースで予約</button>
+      </div>
+    </article>
+  </div>
+  <div class="notes"><span>・飲み放題（90分）は +1,650円、ソフトドリンク飲み放題は +550円。</span><span>・同じテーブルの方は同じコースでお願いします（お子さまを除く）。</span><span>・価格はすべて税込。品数にはドリンクを含みません。</span></div>
+</section>
+
+<!-- メニュー -->
+<section class="sec wrap" id="menu" aria-labelledby="menuH">
+  <div class="sec-h"><h2 id="menuH"><small>MENU</small>メニュー</h2><p>単品でもご注文いただけます。写真・価格（税込）・カロリーと、アレルギー物質を表示しています。</p></div>
+  <div class="tabs" role="tablist" aria-label="カテゴリ" id="tabs"></div>
+  <div class="filter"><span>食べられないものを除く：</span><div class="chipf" id="algf"></div></div>
+  <div class="menu" id="menuGrid" aria-live="polite"></div>
+  <p class="notes">・アレルギー表示は特定原材料8品目と、大豆・ごま・牛肉です。同じ厨房・同じ網で調理するため、微量の混入の可能性があります。<br>・カロリーは1人前の目安です。</p>
+</section>
+
+<!-- 焼き方タイマー -->
+<section class="sec wrap" id="grill" aria-labelledby="grillH">
+  <div class="sec-h"><h2 id="grillH"><small>GRILL TIMER</small>焼き方タイマー</h2><p>テーブルのQRコードからも開けます。お肉を選んで「焼きはじめる」を押すと、裏返す時と食べ頃をお知らせします。</p></div>
+  <div class="timer">
+    <div class="cuts" id="cuts" role="group" aria-label="お肉を選ぶ"></div>
+    <div class="dial">
+      <div class="ring" id="ring"><div><span class="sec-n num" id="secN">40</span><span class="st" id="st">片面を焼く</span></div></div>
+      <p class="tip" id="tip"></p>
+      <div class="row"><button class="cta" type="button" id="go">焼きはじめる</button><button class="cta ghost" type="button" id="reset">リセット</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- こだわり -->
+<section class="sec wrap" id="kodawari" aria-labelledby="kdH">
+  <div class="sec-h"><h2 id="kdH"><small>OUR WAY</small>くろべこの3つのこだわり</h2></div>
+  <div class="kd">
+    <article><div class="ph"><img src="images/kd-wagyu.jpg" alt="" data-fb="九州産黒毛和牛"></div><div class="bd"><span class="no">01</span><h3>九州産の黒毛和牛</h3><p>鹿児島・宮崎・佐賀の黒毛和牛を、一頭分ずつ部位で仕入れます。産地は店内の黒板に毎日書き出します。</p></div></article>
+    <article><div class="ph"><img src="images/kd-cut.jpg" alt="" data-fb="手切りの厚切り"></div><div class="bd"><span class="no">02</span><h3>厚切りは手で切る</h3><p>カルビとタンは、注文を受けてから一枚ずつ手で切ります。機械で薄く切ったお肉より、噛んだ時の肉汁が違います。</p></div></article>
+    <article><div class="ph"><img src="images/kd-charcoal.jpg" alt="" data-fb="炭火の七輪"></div><div class="bd"><span class="no">03</span><h3>炭火と自家製ダレ</h3><p>テーブルは全席炭火です。タレは醤油とりんご・玉ねぎを三日寝かせた自家製。お土産用も販売しています。</p></div></article>
+  </div>
+</section>
+
+<!-- ファミリー・持ち帰り -->
+<section class="sec wrap" aria-label="ご家族とお持ち帰り">
+  <div class="two">
+    <div class="panel" id="family">
+      <div class="famimg"><img src="images/fair-kids.jpg" alt="家族で焼肉を囲む様子" data-fb="家族で焼肉"></div>
+      <h3>ご家族で</h3>
+      <ul><li>小学生は食べ放題が半額、未就学のお子さまは無料</li><li>キッズチェア・取り皿・フォークあり</li><li>小上がりの座敷席（6名×3卓）はベビーカーのまま横付けできます</li><li>お子さま用の甘口ダレ、ソフトクリーム食べ放題</li></ul>
+      <button class="cta ghost" type="button" data-open-rsv data-seat="zashiki" style="align-self:flex-start">座敷席で予約</button>
+    </div>
+    <div class="panel" id="takeout">
+      <h3>お持ち帰り</h3>
+      <div class="bento">
+        <div><span>くろべこカルビ弁当</span><span class="yen num">1,080<small>円</small></span></div>
+        <div><span>厚切り牛タン弁当</span><span class="yen num">1,480<small>円</small></span></div>
+        <div><span>黒毛和牛 焼肉重</span><span class="yen num">2,380<small>円</small></span></div>
+        <div><span>自家製ダレ（300ml）</span><span class="yen num">650<small>円</small></span></div>
+      </div>
+      <p class="hint">お電話で前日まで、または当日30分前までにご予約ください。受け取りは11:30〜22:00。</p>
+    </div>
+  </div>
+</section>
+
+<!-- お店 -->
+<section class="sec wrap" id="shop" aria-labelledby="shopH">
+  <div class="sec-h"><h2 id="shopH"><small>SHOP</small>お店の情報</h2></div>
+  <div class="shopimg"><img src="images/shop.jpg" alt="店先の提灯" data-fb="店先の提灯"></div>
+  <div class="shop">
+    <table class="tbl">
+      <tr><th>住所</th><td>福岡市中央区天神2丁目0-0 1F（架空住所）<br><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%A5%9E%E9%A7%85" target="_blank" rel="noopener">地図アプリで開く</a></td></tr>
+      <tr><th>アクセス</th><td>地下鉄 天神駅 東3番出口から徒歩4分</td></tr>
+      <tr><th>営業時間</th><td class="num">ランチ 11:30〜15:00（L.O.14:30）<br>ディナー 17:00〜23:30（L.O.23:00）<br>年中無休（年末年始を除く）</td></tr>
+      <tr><th>電話</th><td><span class="num" style="user-select:all;font-weight:700">092-000-0029</span><button class="copy" type="button" data-copy="092-000-0029">コピー</button></td></tr>
+      <tr><th>席</th><td>64席（テーブル40・座敷18・カウンター6）／個室2部屋（4〜8名）／全席禁煙</td></tr>
+      <tr><th>お支払い</th><td>各種カード、交通系IC、PayPay／インボイス対応</td></tr>
+    </table>
+    <div class="busy">
+      <h3>混みやすい時間の目安</h3>
+      <p class="now-t" id="busyNow"></p>
+      <div class="bars" id="bars" aria-hidden="true"></div>
+      <div class="axis" aria-hidden="true"><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span></div>
+      <p class="hint">過去の来店傾向からの目安です。金・土の19〜20時はご予約がおすすめです。</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec wrap" aria-labelledby="newsH">
+  <div class="sec-h"><h2 id="newsH"><small>NEWS</small>お知らせ</h2></div>
+  <ul class="news">
+    <li><time datetime="2026-10-01">2026.10.01</time><span class="k">フェア</span><span>牛タン祭りを11月30日まで開催します。</span></li>
+    <li><time datetime="2026-09-20">2026.09.20</time><span class="k">営業</span><span>年末年始は12月31日〜1月2日をお休みします。</span></li>
+    <li><time datetime="2026-09-01">2026.09.01</time><span class="k">メニュー</span><span>黒毛和牛コースに「ミスジ」が加わりました。</span></li>
+  </ul>
+</section>
+
+<section class="sec wrap" id="en" lang="en" aria-labelledby="enH" hidden>
+  <div class="sec-h"><h2 id="enH"><small>ENGLISH</small>Kurobeko Charcoal Yakiniku</h2></div>
+  <div class="panel">
+    <p>All-you-can-eat Japanese BBQ grilled over real charcoal at your table, 4 minutes from Tenjin Station. 90 minutes (last order at 70).</p>
+    <ul><li>Standard ¥3,480 · Premium ¥4,480 (thick-cut short rib and tongue) · Kuroge Wagyu ¥5,980</li><li>Children (6–12) half price, under 6 free</li><li>Lunch 11:30–15:00, dinner 17:00–23:30, open every day</li><li>Phone +81-92-000-0029. English menu and allergy chart available in the restaurant.</li></ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="images/logo.png" alt="炭火焼肉 くろべこ" style="width:112px;height:112px;border-radius:50%"><div><b style="color:var(--bone);font-family:var(--f-head);font-weight:400;font-size:1.1rem">炭火焼肉 くろべこ</b><br>福岡市中央区天神2丁目0-0（架空）／092-000-0029</div>
+    <nav aria-label="フッター"><a href="#course">食べ放題</a><a href="#menu">メニュー・アレルギー</a><a href="#takeout">お持ち帰り</a><a href="#shop">お店の情報</a><a href="#en" data-en>English</a></nav>
+    <p style="flex-basis:100%">ポートフォリオ用の架空店舗です。写真は images フォルダの画像を表示しています。</p>
+  </div>
+</footer>
+
+<nav class="bbar" aria-label="スマホ用メニュー">
+  <a href="#course"><span class="ic">放</span>食べ放題</a>
+  <a href="#menu"><span class="ic">品</span>メニュー</a>
+  <a href="#" class="main" data-open-rsv><span class="ic">予</span>予約</a>
+  <a href="#shop"><span class="ic">店</span>お店</a>
+</nav>
+
+<dialog id="rsv" aria-labelledby="rsvH">
+  <form method="dialog" class="dlg" id="rsvForm" novalidate>
+    <button class="x" type="button" id="rsvClose" aria-label="閉じる">×</button>
+    <h2 id="rsvH">ネット予約</h2>
+    <p class="hint">ポートフォリオ用のデモです。入力内容は送信されません。</p>
+    <div class="form">
+      <div class="field"><label for="r-date">日付</label><input type="date" id="r-date"></div>
+      <div class="field"><label for="r-time">時間</label><select id="r-time"></select></div>
+      <div class="field"><label for="r-adult">大人</label><select id="r-adult"></select></div>
+      <div class="field"><label for="r-kid">小学生 / 未就学児</label><div style="display:flex;gap:.4rem"><select id="r-kid" aria-label="小学生"></select><select id="r-baby" aria-label="未就学児"></select></div></div>
+      <div class="field full"><label for="r-course">コース</label><select id="r-course"><option value="std">スタンダード 3,480円</option><option value="jo" selected>上焼肉 4,480円（いちばん人気）</option><option value="wagyu">黒毛和牛 5,980円</option><option value="alc">単品注文（席のみ）</option></select></div>
+      <div class="field"><label for="r-drink">飲み放題</label><select id="r-drink"><option value="0">なし</option><option value="1650">アルコール +1,650円</option><option value="550">ソフトドリンク +550円</option></select></div>
+      <div class="field"><label for="r-seat">お席</label><select id="r-seat"><option value="any">おまかせ</option><option value="table">テーブル</option><option value="zashiki">座敷（お子さま連れに）</option><option value="room">個室（4〜8名）</option><option value="counter">カウンター（1〜2名）</option></select></div>
+      <div class="est"><span>お会計の目安（税込）</span><span class="yen num" id="est">—</span></div>
+      <p class="err" id="err" hidden></p>
+    </div>
+    <button class="cta" type="submit" id="rsvGo">この内容で予約する</button>
+    <p class="hint" id="rsvDone" hidden></p>
+  </form>
+</dialog>
+
+<script>
+(function(){
+  /* ===== データ（ここを書き換えれば更新できます） ===== */
+  const ALG = ['小麦','卵','乳','えび','かに','そば','落花生','くるみ','大豆','ごま'];
+  const MENU = [
+    {c:'meat', n:'くろべこカルビ', p:759, k:320, a:['小麦','大豆','ごま'], img:'kalbi', tags:['人気No.1'], to:true},
+    {c:'meat', n:'厚切り上カルビ', p:1089, k:410, a:['小麦','大豆','ごま'], img:'jo-kalbi', tags:['手切り']},
+    {c:'meat', n:'上ハラミ', p:1199, k:290, a:['小麦','大豆','ごま'], img:'harami', tags:[]},
+    {c:'meat', n:'牛タン塩', p:1089, k:220, a:[], img:'tan', tags:[]},
+    {c:'meat', n:'厚切り牛タン', p:1639, k:300, a:[], img:'atsu-tan', tags:['祭り']},
+    {c:'meat', n:'黒毛和牛 特選ロース', p:1980, k:380, a:['小麦','大豆'], img:'wagyu-loin', tags:['九州産']},
+    {c:'meat', n:'ミスジ', p:1780, k:340, a:['小麦','大豆'], img:'misuji', tags:['新']},
+    {c:'meat', n:'ホルモン盛り合わせ', p:869, k:360, a:['小麦','大豆','ごま'], img:'horumon', tags:[]},
+    {c:'meat', n:'豚トロ', p:649, k:380, a:[], img:'tontoro', tags:[]},
+    {c:'side', n:'石焼ビビンバ', p:869, k:640, a:['卵','小麦','大豆','ごま'], img:'bibimbap', tags:[]},
+    {c:'side', n:'冷麺', p:869, k:480, a:['小麦','卵','大豆','そば'], img:'reimen', tags:[]},
+    {c:'side', n:'ナムル盛り合わせ', p:539, k:120, a:['大豆','ごま'], img:'namul', tags:[]},
+    {c:'side', n:'白菜キムチ', p:429, k:40, a:['えび'], img:'kimchi', tags:[]},
+    {c:'side', n:'チョレギサラダ', p:539, k:110, a:['小麦','大豆','ごま'], img:'salad', tags:[]},
+    {c:'side', n:'わかめスープ', p:429, k:45, a:['小麦','大豆','ごま'], img:'soup', tags:[]},
+    {c:'sweet', n:'ソフトクリーム', p:319, k:180, a:['乳'], img:'soft', tags:[]},
+    {c:'sweet', n:'杏仁豆腐', p:429, k:160, a:['乳','落花生'], img:'annin', tags:[]},
+    {c:'lunch', n:'カルビ定食（平日）', p:990, k:820, a:['小麦','大豆','ごま'], img:'lunch-kalbi', tags:['ランチ'], to:true},
+    {c:'lunch', n:'ハラミ定食', p:1290, k:760, a:['小麦','大豆','ごま'], img:'lunch-harami', tags:['ランチ']},
+    {c:'lunch', n:'黒毛和牛 焼肉重', p:2380, k:880, a:['小麦','大豆'], img:'jyu', tags:['ランチ'], to:true}
+  ];
+  const CATS = [{id:'meat',n:'お肉'},{id:'side',n:'ご飯・麺・サイド'},{id:'sweet',n:'デザート'},{id:'lunch',n:'ランチ'}];
+  const CUTS = [
+    {n:'牛タン塩', a:20, b:10, tip:'片面をしっかり。裏返したら軽くあぶる程度で。レモンでどうぞ。'},
+    {n:'厚切り牛タン', a:90, b:60, tip:'網の端の弱い火で。切れ目が開いたら食べ頃です。'},
+    {n:'くろべこカルビ', a:40, b:20, tip:'脂が落ちて炎が上がったら、網の端へ逃がしてください。'},
+    {n:'厚切り上カルビ', a:70, b:40, tip:'裏返すのは一度だけ。肉汁が表面に浮いたら合図です。'},
+    {n:'ハラミ', a:60, b:40, tip:'中まで火を通しすぎないのが、やわらかく食べるコツです。'},
+    {n:'ホルモン', a:180, b:60, tip:'皮目から。脂がぷっくり縮んで、皮に焼き色が付いたら裏返します。'}
+  ];
+  const BUSY = [1,3,2,1,0, 1,2,3,3,2,1,1]; // 11-15時, 17-23時（0〜3）
+  const PRICE = {std:3480, jo:4480, wagyu:5980, alc:0};
+
+  /* ===== 画像：images/ にファイルがなければ代わりの表示 ===== */
+  function fallback(img){
+    const box=img.parentElement; img.remove();
+    const d=document.createElement('div'); d.className='fb';
+    d.innerHTML='<div><b></b><small></small></div>';
+    d.querySelector('b').textContent=img.dataset.fb||'';
+    d.querySelector('small').textContent='images/'+(img.getAttribute('src')||'').split('/').pop();
+    box.append(d);
+  }
+  function wireImg(img){
+    img.decoding='async';
+    if(img.complete){ if(img.naturalWidth===0) fallback(img); return; }   // already loaded: show at once
+    img.classList.add('fade');
+    img.addEventListener('load',()=>img.classList.add('in'),{once:true});
+    img.addEventListener('error',()=>fallback(img),{once:true});
+  }
+  document.querySelectorAll('img[data-fb]').forEach(wireImg);
+  /* menu photos for every tab are fetched quietly after the page is up, so switching tabs is instant */
+  window.addEventListener('load',()=>{
+    const warm=()=>MENU.forEach(m=>{const i=new Image(); i.decoding='async'; i.src=`images/${m.img}.jpg`;});
+    ('requestIdleCallback' in window) ? requestIdleCallback(warm,{timeout:1500}) : setTimeout(warm,600);
+  });
+
+  /* ===== メニュー ===== */
+  let cat='meat'; const excl=new Set();
+  const tabs=document.getElementById('tabs');
+  CATS.forEach(c=>{const b=document.createElement('button');b.type='button';b.role='tab';b.textContent=c.n;b.dataset.c=c.id;b.addEventListener('click',()=>{cat=c.id;drawMenu()});tabs.append(b)});
+  const af=document.getElementById('algf');
+  ALG.forEach(a=>{const b=document.createElement('button');b.type='button';b.textContent=a;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>{excl.has(a)?excl.delete(a):excl.add(a);b.setAttribute('aria-pressed',String(excl.has(a)));drawMenu()});af.append(b)});
+  function drawMenu(){
+    [...tabs.children].forEach(b=>b.setAttribute('aria-selected',String(b.dataset.c===cat)));
+    const g=document.getElementById('menuGrid'); g.innerHTML='';
+    const list=MENU.filter(m=>m.c===cat && !m.a.some(x=>excl.has(x)));
+    if(!list.length){const e=document.createElement('p');e.className='empty';e.textContent='この条件に合うメニューはありません。スタッフにご相談ください。';g.append(e);return}
+    list.forEach(m=>{
+      const el=document.createElement('article'); el.className='dish';
+      el.innerHTML=`<div class="ph"><img alt=""><div class="badges"></div></div><div class="bd"><h3></h3><div class="meta"><span class="yen num"></span><span class="kcal num"></span></div><p class="alg"></p></div>`;
+      const img=el.querySelector('img'); img.src=`images/${m.img}.jpg`; img.alt=m.n; img.dataset.fb=m.n; wireImg(img);
+      const bd=el.querySelector('.badges'); m.tags.forEach(t=>{const s=document.createElement('span');s.textContent=t;bd.append(s)}); if(m.to){const s=document.createElement('span');s.className='to';s.textContent='お持ち帰り可';bd.append(s)}
+      el.querySelector('h3').textContent=m.n;
+      el.querySelector('.yen').innerHTML=`${m.p.toLocaleString('ja-JP')}<small>円</small>`;
+      el.querySelector('.kcal').textContent=`${m.k}kcal`;
+      el.querySelector('.alg').innerHTML = m.a.length ? 'アレルギー：<b></b>' : 'アレルギー：<b>表示対象なし</b>';
+      if(m.a.length) el.querySelector('.alg b').textContent=m.a.join('・');
+      g.append(el);
+    });
+  }
+  drawMenu();
+  document.querySelectorAll('[data-tab]').forEach(a=>a.addEventListener('click',()=>{cat=a.dataset.tab;drawMenu()}));
+
+  /* ===== 焼き方タイマー ===== */
+  const cutsEl=document.getElementById('cuts'), ring=document.getElementById('ring'), secN=document.getElementById('secN'), st=document.getElementById('st'), tip=document.getElementById('tip');
+  let sel=2, timer=null, phase=0, left=0, total=0;
+  CUTS.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.innerHTML='<b></b><span></span>';b.querySelector('b').textContent=c.n;b.querySelector('span').textContent=`表${c.a}秒・裏${c.b}秒`;b.addEventListener('click',()=>{sel=i;reset()});cutsEl.append(b)});
+  function paint(){ [...cutsEl.children].forEach((b,i)=>b.setAttribute('aria-pressed',String(i===sel))); secN.textContent=left; ring.style.setProperty('--p', total? (1-left/total):0); }
+  function reset(){ clearInterval(timer);timer=null;phase=0;const c=CUTS[sel];left=c.a;total=c.a;st.textContent='片面を焼く';tip.textContent=c.tip;document.getElementById('go').textContent='焼きはじめる';paint(); }
+  function tick(){
+    left--;
+    if(left<=0){
+      if(phase===0){phase=1;const c=CUTS[sel];left=c.b;total=c.b;st.textContent='裏返して！';ring.classList.remove('flip');void ring.offsetWidth;ring.classList.add('flip');}
+      else {clearInterval(timer);timer=null;left=0;st.textContent='食べ頃です';tip.textContent='網から上げて、熱いうちにどうぞ。';document.getElementById('go').textContent='もう一枚焼く';ring.classList.remove('flip');void ring.offsetWidth;ring.classList.add('flip');}
+    }
+    paint();
+  }
+  document.getElementById('go').addEventListener('click',()=>{ if(timer) return; if(phase===1&&left===0) reset(); if(phase===0) st.textContent='片面を焼いています'; timer=setInterval(tick,1000); });
+  document.getElementById('reset').addEventListener('click',reset);
+  reset();
+
+  /* ===== 混雑の目安 ===== */
+  function tokyo(){const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',hour:'2-digit',minute:'2-digit',hour12:false,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const g=t=>(p.find(x=>x.type===t)||{}).value;return {ymd:`${g('year')}-${g('month')}-${g('day')}`,h:Number(g('hour'))%24,m:Number(g('minute'))}}
+  const HOURS=[11,12,13,14,15,17,18,19,20,21,22,23];
+  const bars=document.getElementById('bars'); const t=tokyo();
+  BUSY.forEach((v,i)=>{const b=document.createElement('i');b.style.height=(18+v*27)+'%';if(v>=3)b.className='hi';else if(v===2)b.className='md';if(HOURS[i]===t.h)b.classList.add('now');bars.append(b)});
+  const min=t.h*60+t.m;
+  const open = (min>=690&&min<900)||(min>=1020&&min<1410);
+  const lo = min<870 && min>=690 ? '14:30' : '23:00';
+  const idx=HOURS.indexOf(t.h); const lvl= idx>=0? BUSY[idx] : 0;
+  document.getElementById('busyNow').textContent = open ? `いま営業中（L.O. ${lo}）。この時間は${['空いています','比較的空いています','やや混みます','混み合います'][lvl]}。` : (min<690 ? '本日は11:30から営業します。' : (min<1020 ? 'ランチは終了しました。ディナーは17:00からです。' : '本日の営業は終了しました。'));
+
+  /* ===== 予約 ===== */
+  const dlg=document.getElementById('rsv'), $=id=>document.getElementById(id);
+  const opt=(sel,from,to,def,suf)=>{for(let i=from;i<=to;i++){const o=document.createElement('option');o.value=i;o.textContent=i+suf;if(i===def)o.selected=true;sel.append(o)}};
+  opt($('r-adult'),1,20,2,'名'); opt($('r-kid'),0,10,0,'名'); opt($('r-baby'),0,10,0,'名');
+  [[11,30],[12,0],[12,30],[13,0],[13,30],[17,0],[17,30],[18,0],[18,30],[19,0],[19,30],[20,0],[20,30],[21,0],[21,30]].forEach(([h,m])=>{const o=document.createElement('option');o.textContent=`${h}:${String(m).padStart(2,'0')}`;if(h===18&&m===30)o.selected=true;$('r-time').append(o)});
+  function est(){
+    const c=$('r-course').value, ad=+$('r-adult').value, kd=+$('r-kid').value, bb=+$('r-baby').value, dr=+$('r-drink').value, seat=$('r-seat').value, ppl=ad+kd+bb;
+    const errs=[];
+    if(seat==='room'&&(ppl<4||ppl>8)) errs.push('個室は4〜8名様です。');
+    if(seat==='counter'&&ppl>2) errs.push('カウンターは2名様までです。');
+    if(ppl>20) errs.push('21名様以上はお電話でご相談ください。');
+    if(!$('r-date').value) errs.push('日付を選んでください。');
+    $('err').hidden=!errs.length; $('err').textContent=errs.join(' ');
+    if(c==='alc'){ $('est').textContent='単品注文'; return errs; }
+    const sum = PRICE[c]*ad + Math.round(PRICE[c]/2)*kd + dr*ad;
+    $('est').innerHTML=`${sum.toLocaleString('ja-JP')}<small>円</small>`;
+    return errs;
+  }
+  ['r-date','r-time','r-adult','r-kid','r-baby','r-course','r-drink','r-seat'].forEach(id=>$(id).addEventListener('change',est));
+  function openRsv(o){
+    const tt=tokyo(); $('r-date').min=tt.ymd; if(!$('r-date').value) $('r-date').value=tt.ymd;
+    if(o&&o.course) $('r-course').value=o.course;
+    if(o&&o.seat) $('r-seat').value=o.seat;
+    $('rsvDone').hidden=true; $('rsvGo').hidden=false;
+    est();
+    if(typeof dlg.showModal==='function') dlg.showModal(); else dlg.setAttribute('open','');
+  }
+  document.querySelectorAll('[data-open-rsv]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();openRsv({course:b.dataset.course,seat:b.dataset.seat})}));
+  $('rsvClose').addEventListener('click',()=>dlg.close());
+  $('rsvForm').addEventListener('submit',e=>{e.preventDefault(); if(est().length) return;
+    const names={std:'スタンダード',jo:'上焼肉',wagyu:'黒毛和牛',alc:'単品注文'};
+    $('rsvDone').textContent=`デモ：${$('r-date').value} ${$('r-time').value}、大人${$('r-adult').value}名・小学生${$('r-kid').value}名・未就学児${$('r-baby').value}名、${names[$('r-course').value]}。実際の予約は成立していません。`;
+    $('rsvDone').hidden=false; $('rsvGo').hidden=true;});
+
+  /* ===== コピー・英語 ===== */
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-copy]'); if(!b) return;
+    const done=()=>{b.textContent='コピーしました';setTimeout(()=>b.textContent='コピー',1500)};
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(b.dataset.copy).then(done,()=>{b.textContent='長押しで選択'}); else b.textContent='長押しで選択';});
+  function showEn(){ const s=document.getElementById('en'); s.hidden=false; }
+  document.getElementById('enBtn').addEventListener('click',showEn);
+  document.querySelectorAll('[data-en]').forEach(a=>a.addEventListener('click',showEn));
+  if(location.hash==='#en') showEn();
+})();
+</script>
+
+</body>
+</html>
